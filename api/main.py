@@ -9,9 +9,21 @@ from api.routers import linedb as line_db
 
 
 
-
 app = FastAPI(title="scratch-db", description="connect scratch to database")
 app.include_router(line_db.router)
+
+origins = [
+    "http://localhost:8601",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 
 

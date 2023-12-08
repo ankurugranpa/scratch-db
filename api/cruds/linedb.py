@@ -8,7 +8,7 @@ import  api.schemas.linedb as line_schema
 
 from typing import List, Tuple
 
-from sqlalchemy import select
+from sqlalchemy import select, update, and_
 from sqlalchemy.engine import Result
 
 
@@ -23,13 +23,27 @@ async def add_message(
     await db.refresh(message)
     return message
 
-async  def response_get_message(db: AsyncSession):
+async  def response_get_message(filter_id: line_schema.FilterUser, db: AsyncSession):
     message: Result = await (
         db.execute(
             select(
+                line_model.Message.id,
                 line_model.Message.user_id,
                 line_model.Message.message
-            ).filter(line_model.Message.send == false())
+            ).filter(line_model.Message.send == false(), line_model.Message.user_id == filter_id.user_id)
         )
     )
-    return message.all()
+    # line_model.Message.send = True
+    message_list = message.all()
+    for row in message_list:
+        await db.execute(
+            update(line_model.Message).
+            where(line_model.Message.id == row.id).
+            values(send=True)
+        )
+    # await db.execute(update(original).where(original.id ==)
+
+        # print(message_list[1])
+        # test = await db.execute(update(original).filter(original.id == item[0]))
+    await db.commit()
+    return message_list

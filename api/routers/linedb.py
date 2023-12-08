@@ -13,6 +13,6 @@ async def get_message(line_body: line_db_schema.GetMessage, db:AsyncSession=Depe
     return  await line_db_crud.add_message(db, line_body)
 
 
-@router.get("/line-db/get", response_model=List[line_db_schema.ResponseGetMessage])
-async  def response_get_message(db: AsyncSession =Depends(get_db)):
-    return await line_db_crud.response_get_message(db)
+@router.post("/line-db/get", response_model=List[line_db_schema.ResponseGetMessage])
+async  def response_get_message(user_id: line_db_schema.FilterUser ,db: AsyncSession =Depends(get_db)):
+    return await line_db_crud.response_get_message(user_id, db)
