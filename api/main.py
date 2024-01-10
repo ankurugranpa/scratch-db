@@ -14,6 +14,12 @@ app.include_router(line_db.router)
 
 origins = [
     "http://localhost:8601",
+    "http://localhost:8000",
+    "http://localhost:8001",
+    "https://brief-llama-distinctly.ngrok-free.app",
+    "https://7548-133-24-119-235.ngrok-free.app",
+    "https://brief-llama-distinctly.ngrok-free.app",
+    "https://7ff7-133-24-119-235.ngrok-free.app"
 ]
 
 app.add_middleware(
